@@ -17,7 +17,7 @@ class CalculationsController < ApplicationController
 
     @character_count_without_spaces = @text.gsub(/\s+/,"").length
 
-    @occurrences = @text.downcase.split.count(@special_word.downcase)
+    @occurrences = @text.gsub(/[^a-z0-9\s]/i,"").downcase.split.count(@special_word.downcase) #downcase necessary?
 
     # ================================================================================
     # Your code goes above.
