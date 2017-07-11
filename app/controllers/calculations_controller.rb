@@ -17,7 +17,7 @@ class CalculationsController < ApplicationController
 
     @character_count_without_spaces = @text.gsub(/\s+/,"").length
 
-    @occurrences = @text.downcase.split.count(@special_word.downcase)
+    @occurrences = @text.gsub(/[^a-z0-9\s]/i,"").downcase.split.count(@special_word.downcase) #downcase necessary?
 
     # ================================================================================
     # Your code goes above.
@@ -38,7 +38,7 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    @monthly_payment = @principal *( ((@apr / 100 / 12) * ( 1 + (@apr / 100 / 12))**(@years * 12))  / ( ( 1 + (@apr / 100 / 12) )**(@years * 12) - 1) )
 
     # ================================================================================
     # Your code goes above.
@@ -60,12 +60,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending-@starting
+    @minutes = @seconds/60
+    @hours = @minutes/60
+    @days = @hours/24
+    @weeks = @days/7
+    @years = @days/365
 
     # ================================================================================
     # Your code goes above.
@@ -82,27 +82,46 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum-@minimum
 
-    @median = "Replace this string with your answer."
+    if @count.odd?
+      @median = @sorted_numbers[@count/2]
+    else
+      a=@sorted_numbers[@count/2]
+      b=@sorted_numbers[(@count/2)-1]
+      @median = (a+b)/2
+    end
 
-    @sum = "Replace this string with your answer."
+    @sum = @numbers.sum
 
-    @mean = "Replace this string with your answer."
+    @mean = @sum/@count
+    
+    nums = @numbers
+    vars = []
+    nums.each do |num|
+      var = ((num-@mean)**2)
+      vars.push(var)
+    end
+    @variance = vars.sum/@count
 
-    @variance = "Replace this string with your answer."
+    @standard_deviation = @variance**0.5
 
-    @standard_deviation = "Replace this string with your answer."
-
-    @mode = "Replace this string with your answer."
+   # @mode = @numbers.max_by{|i|@numbers.count(i)}
+    
+    occurrences = []
+    @numbers.each do |i|
+      occurrences.push(@numbers.count(i))
+    end  
+    
+    @mode = @numbers[occurrences.index(occurrences.max)]
 
     # ================================================================================
     # Your code goes above.
