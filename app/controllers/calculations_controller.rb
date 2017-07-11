@@ -97,7 +97,7 @@ class CalculationsController < ApplicationController
     else
       a=@sorted_numbers[@count/2]
       b=@sorted_numbers[(@count/2)-1]
-      @median = (a+b)/@count
+      @median = (a+b)/2
     end
 
     @sum = @numbers.sum
