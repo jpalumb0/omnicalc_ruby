@@ -114,7 +114,14 @@ class CalculationsController < ApplicationController
 
     @standard_deviation = @variance**0.5
 
-    @mode = @numbers.max_by{|i|@numbers.count(i)}
+   # @mode = @numbers.max_by{|i|@numbers.count(i)}
+    
+    occurrences = []
+    @numbers.each do |i|
+      occurrences.push(@numbers.count(i))
+    end  
+    
+    @mode = @numbers[occurrences.index(occurrences.max)]
 
     # ================================================================================
     # Your code goes above.
